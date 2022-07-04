@@ -21,7 +21,7 @@ describe("my express project", () => {
     })
 
     describe("GET:/api/topics", () => {
-        it("200- returns topics", () => {
+        it("200- this returns topics", () => {
             return request(app).get("/api/topics").expect(200).then(({ body: {topics} }) => {
                 expect(topics).toHaveLength(3);
                 expect(topics).toBeInstanceOf(Array);
