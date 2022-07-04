@@ -15,7 +15,7 @@ describe("my express project", () => {
     describe("GET:/api/topicz", () => {
         it("404 - returns page not found", () => {
             return request(app).get("/api/topicz").expect(404).then(({ body: { message } }) => {
-                expect(message).toBe("Invalid path");
+                expect(message).toBe("not found");
                 
             })
         })
@@ -37,5 +37,35 @@ describe("my express project", () => {
             })
         })
     })
+
+    describe("GET: /api/articles/:article_id", () => {
+        it("200- returns article by id", () => {
+            const id = 5;
+            return request(app).get(`/api/articles/${id}`).expect(200).then(({ body: { article } }) => {
+                expect(article).toEqual(expect.objectContaining({
+        author: expect.any(String),
+        title: expect.any(String),
+        article_id: 5,
+        body: expect.any(String),
+        topic: expect.any(String),
+        created_at: expect.any(String),
+        votes: expect.any(Number)
+      }));
+                  
+                
+            })
+        })
+    })
+
+    describe("GET:/api/articles/id_not_avilable", () => {
+        it("404 - returns page not found", () => {
+            const id = 1000;
+            return request(app).get(`/api/articles/${id}`).expect(404).then(({ body: { message } }) => {
+                expect(message).toBe("not found");
+                
+            })
+        })
+    })
+
 })
 

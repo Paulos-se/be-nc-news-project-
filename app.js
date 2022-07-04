@@ -1,17 +1,22 @@
 const express = require("express");
 const app = (express());
-const { getTopics } = require("./controllers/controllers.news");
+const { getTopics,getArticleById } = require("./controllers/controllers.news");
 app.use(express.json());
 
 app.get("/api/topics", getTopics);
+app.get("/api/articles/:article_id", getArticleById);
+
 
 app.use("*", (req, res) => {
-    res.status(404).send({message:"Invalid path"})
+    res.status(404).send({message:"not found"})
 })
 
 
 
-app.use((err, req,res) =>{
+
+
+app.use((err, req, res) => {
+    console.log("im in 500");
     res.status(500).send({ message: "server error" });
 })
 
