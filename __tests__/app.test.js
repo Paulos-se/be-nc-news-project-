@@ -2,6 +2,7 @@ const app = require("../app");
 const db = require("../db/connection");
 const seed = require("../db/seeds/seed");
 
+
 const { articleData, commentData, topicData, userData } = require("../db/data/test-data/index");
 const request = require("supertest");
 
@@ -16,7 +17,7 @@ describe("my express project", () => {
         it("404 - returns page not found", () => {
             return request(app).get("/api/topicz").expect(404).then(({ body: { message } }) => {
                 expect(message).toBe("Invalid path");
-                
+
             })
         })
     })
@@ -31,11 +32,10 @@ describe("my express project", () => {
                         slug: expect.any(String),
                         description: expect.any(String)
                     }))
-                    
+
                 })
-                
+
             })
         })
     })
 })
-
