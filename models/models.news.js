@@ -28,3 +28,25 @@ exports.fetchArticleById = (id) => {
     
     }
 }
+
+exports.updateArticleVote = (vote, id) => {
+    if (!vote) {
+        return Promise.reject({
+            status: 400,
+            message:"bad formatted update"
+        })
+    }
+    else if (isNaN(parseInt(vote))) {
+       
+        return Promise.reject({
+            status: 400,
+            message:"invalid update"
+        });
+    } else {
+        
+        return db.query(`UPDATE articles SET votes=votes+${vote} WHERE article_id=$1 RETURNING *`, [id]).then(({ rows }) => {
+            return rows[0].votes;
+        })
+    }
+}
+

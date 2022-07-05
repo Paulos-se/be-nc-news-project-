@@ -74,16 +74,34 @@ describe("my express project", () => {
                 
             })
         })
-    // describe("PATCH: /api/articles/:article_id", () => {
-    //     it("200 - updates article by id", () => {
-    //         const id = 5;
+    describe("PATCH: /api/articles/:article_id", () => {
+        it("200 - updates article by id", () => {
+            const id = 1;
             
-    //         return request(app).
-    //             patch(`/api/articles/${id}`).send({ inc_votes: 1 }).expect(204).then(() => {
-    //                 // return db.query(`SELECT votes FROM articles WHERE article_id=$1`,[1]).then()
-    //             })
-            
-    //     })
-    // })
+            return request(app).
+                patch(`/api/articles/${id}`).send({ inc_votes: -5 }).expect(204).then(() => {
+                    return db.query(`SELECT votes FROM articles WHERE article_id=$1`, [id]).then(({ rows }) => {
+                        expect(rows[0].votes).toBe(95);
+                    })
+                })
+        })
+
+        it("400 - returns invalid request if request body doesn't contain vote", () => {
+            const id = 5;
+            return request(app).patch(`/api/articles/${id}`).send({  }).expect(400).then(({body:{message}}) => {
+                expect(message).toBe("bad formatted update");
+            })
+                
+        })
+        
+         it("400 - returns invalid request if request body  contain vote", () => {
+            const id = 5;
+            return request(app).patch(`/api/articles/${id}`).send({ inc_votes:"cat" }).expect(400).then(({body:{message}}) => {
+                expect(message).toBe("invalid update");
+            })
+                
+            })
+    
+    })
 })
 
