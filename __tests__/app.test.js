@@ -74,16 +74,16 @@ describe("my express project", () => {
                 
             })
         })
-    describe("PATCH: /api/articles/:article_id", () => {
-        it("200 - updates article by id", () => {
-            const id = 5;
+    // describe("PATCH: /api/articles/:article_id", () => {
+    //     it("200 - updates article by id", () => {
+    //         const id = 5;
             
-            return request(app).
-                patch(`/api/articles/${id}`).send({ inc_votes: 1 }).expect(204).then(() => {
-                    // return db.query(`SELECT votes FROM articles WHERE article_id=$1`,[1]).then()
-                })
+    //         return request(app).
+    //             patch(`/api/articles/${id}`).send({ inc_votes: 1 }).expect(204).then(() => {
+    //                 // return db.query(`SELECT votes FROM articles WHERE article_id=$1`,[1]).then()
+    //             })
             
-        })
-    })
+    //     })
+    // })
 })
 
