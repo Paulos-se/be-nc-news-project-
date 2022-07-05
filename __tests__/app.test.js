@@ -112,6 +112,15 @@ describe("my express project", () => {
     
     })
 
+    describe("GET:/api/userz", () => {
+        it("404 - returns page not found", () => {
+            return request(app).get("/api/userz").expect(404).then(({ body: { message } }) => {
+                expect(message).toBe("not found");
+                
+            })
+        })
+    })
+
     describe("GET: /api/users", () => {
         it("200 returns users", () => {
             return request(app).get("/api/users").expect(200).then(({ body: { users } }) => {
