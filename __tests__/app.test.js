@@ -57,25 +57,23 @@ describe("my express project", () => {
         })
     })
 
-    describe("GET:/api/articles/id_not_avilable", () => {
-        it("404 - returns page not found", () => {
+
+        it("404 - returns page not found if id is not avilable", () => {
             const id = 1000;
             return request(app).get(`/api/articles/${id}`).expect(404).then(({ body: { message } }) => {
                 expect(message).toBe(`article ${id} not found.`);
                 
             })
         })
-    })
 
 
-    describe("GET:/api/articles/id_not_number", () => {
-        it("400 - returns bad request", () => {
+        it("400 - returns bad request if id is not a number", () => {
             const id = "hi";
             return request(app).get(`/api/articles/${id}`).expect(400).then(({ body: { message } }) => {
                 expect(message).toBe('invalid id');
                 
             })
         })
-    })
+    
 })
 
