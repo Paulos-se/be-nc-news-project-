@@ -24,7 +24,12 @@
     "husky": "^7.0.0",
     "jest": "^27.5.1",
     "jest-extended": "^2.0.0",
+<<<<<<< HEAD
+    "pg-format": "^1.0.4",
+    "supertest": "^6.2.4"
+=======
     "pg-format": "^1.0.4"
+>>>>>>> cae1836ab2d3cd7d7b66bdd190a05290ba43e4d5
   },
   "dependencies": {
     "dotenv": "^16.0.0",
