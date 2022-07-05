@@ -26,6 +26,7 @@
     "jest-extended": "^2.0.0",
     "pg-format": "^1.0.4",
     "supertest": "^6.2.4"
+
   },
   "dependencies": {
     "dotenv": "^16.0.0",

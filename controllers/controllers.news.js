@@ -1,3 +1,4 @@
+
 const { fetchTopics } = require("../models/models.news");
 
 exports.getTopics = (req, res, next) => {
@@ -5,5 +6,3 @@ exports.getTopics = (req, res, next) => {
         res.status(200).send({ topics});
     })
 }
-
-
