@@ -72,7 +72,7 @@ describe("my express project", () => {
         it("400 - returns bad request", () => {
             const id = "hi";
             return request(app).get(`/api/articles/${id}`).expect(400).then(({ body: { message } }) => {
-                expect(message).toBe('bad format passed');
+                expect(message).toBe('invalid id');
                 
             })
         })
