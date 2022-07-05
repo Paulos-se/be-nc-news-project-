@@ -1,6 +1,7 @@
 const app = require("../app");
 const db = require("../db/connection");
 const seed = require("../db/seeds/seed");
+
 const { articleData, commentData, topicData, userData } = require("../db/data/test-data/index");
 const request = require("supertest");
 
@@ -21,7 +22,7 @@ describe("my express project", () => {
     })
 
     describe("GET:/api/topics", () => {
-        it("200- this returns topics", () => {
+        it("200- returns topics", () => {
             return request(app).get("/api/topics").expect(200).then(({ body: {topics} }) => {
                 expect(topics).toHaveLength(3);
                 expect(topics).toBeInstanceOf(Array);
@@ -30,9 +31,9 @@ describe("my express project", () => {
                         slug: expect.any(String),
                         description: expect.any(String)
                     }))
-
+                    
                 })
-
+                
             })
         })
     })
@@ -56,16 +57,23 @@ describe("my express project", () => {
         })
     })
 
-    describe("GET:/api/articles/id_not_avilable", () => {
-        it("404 - returns page not found", () => {
+
+        it("404 - returns page not found if id is not avilable", () => {
             const id = 1000;
             return request(app).get(`/api/articles/${id}`).expect(404).then(({ body: { message } }) => {
                 expect(message).toBe(`article ${id} not found.`);
                 
             })
         })
-    })
 
 
-
+        it("400 - returns bad request if id is not a number", () => {
+            const id = "hi";
+            return request(app).get(`/api/articles/${id}`).expect(400).then(({ body: { message } }) => {
+                expect(message).toBe('invalid id');
+                
+            })
+        })
+    
 })
+
