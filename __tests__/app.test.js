@@ -1,7 +1,6 @@
 const app = require("../app");
 const db = require("../db/connection");
 const seed = require("../db/seeds/seed");
-
 const { articleData, commentData, topicData, userData } = require("../db/data/test-data/index");
 const request = require("supertest");
 
@@ -22,7 +21,7 @@ describe("my express project", () => {
     })
 
     describe("GET:/api/topics", () => {
-        it("200- returns topics", () => {
+        it("200- this returns topics", () => {
             return request(app).get("/api/topics").expect(200).then(({ body: {topics} }) => {
                 expect(topics).toHaveLength(3);
                 expect(topics).toBeInstanceOf(Array);
@@ -31,9 +30,9 @@ describe("my express project", () => {
                         slug: expect.any(String),
                         description: expect.any(String)
                     }))
-                    
+
                 })
-                
+
             })
         })
     })
@@ -68,6 +67,7 @@ describe("my express project", () => {
     })
 
 
+
     describe("GET:/api/articles/id_not_number", () => {
         it("400 - returns bad request", () => {
             const id = "hi";
@@ -79,3 +79,5 @@ describe("my express project", () => {
     })
 })
 
+
+})
