@@ -61,11 +61,21 @@ describe("my express project", () => {
         it("404 - returns page not found", () => {
             const id = 1000;
             return request(app).get(`/api/articles/${id}`).expect(404).then(({ body: { message } }) => {
-                expect(message).toBe("not found");
+                expect(message).toBe(`article ${id} not found.`);
                 
             })
         })
     })
 
+
+    describe("GET:/api/articles/id_not_number", () => {
+        it("400 - returns bad request", () => {
+            const id = "hi";
+            return request(app).get(`/api/articles/${id}`).expect(400).then(({ body: { message } }) => {
+                expect(message).toBe('bad format passed');
+                
+            })
+        })
+    })
 })
 

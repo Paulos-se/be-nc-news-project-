@@ -3,7 +3,6 @@ const { fetchTopics,fetchArticleById } = require("../models/models.news");
 
 exports.getTopics = (req, res, next) => {
     fetchTopics().then(( result) => {
-        console.log(result);
         res.status(200).send({ topics:result });
     })
 }
@@ -14,7 +13,7 @@ exports.getArticleById = (req,res,next) => {
     fetchArticleById(article_id).then((result) => {
         res.status(200).send({ article: result });
     }).catch((err) => {
-        
+        // console.log(err);
         next(err);
     })
 }

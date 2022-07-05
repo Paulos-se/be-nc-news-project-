@@ -1,6 +1,6 @@
 const express = require("express");
 const app = (express());
-const { getTopics,getArticleById } = require("./controllers/controllers.news");
+const { getTopics,getArticleById} = require("./controllers/controllers.news");
 app.use(express.json());
 
 app.get("/api/topics", getTopics);
@@ -11,12 +11,19 @@ app.use("*", (req, res) => {
     res.status(404).send({message:"not found"})
 })
 
-
+app.use((err, req, res, next)=>{
+// console.log(err)
+    if (err.status && err.message) {
+        res.status(err.status).send({message:err.message})
+    } else {
+        next(err);
+    }
+})
 
 
 
 app.use((err, req, res) => {
-    console.log("im in 500");
+    console.log("im here");
     res.status(500).send({ message: "server error" });
 })
 
