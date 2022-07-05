@@ -77,13 +77,21 @@ describe("my express project", () => {
     describe("PATCH: /api/articles/:article_id", () => {
         it("200 - updates article by id", () => {
             const id = 1;
-            
-            return request(app).
+            let beforePatch = 0;
+            let afterPatch = 0;
+            return db.query(`SELECT votes FROM articles WHERE article_id=$1`, [id]).then(({ rows }) => {
+                beforePatch = rows[0].votes;
+                return request(app).
                 patch(`/api/articles/${id}`).send({ inc_votes: -5 }).expect(204).then(() => {
                     return db.query(`SELECT votes FROM articles WHERE article_id=$1`, [id]).then(({ rows }) => {
-                        expect(rows[0].votes).toBe(95);
+                        afterPatch = rows[0].votes;
+                        expect(afterPatch).toBe(beforePatch + (-5));
+                        //expect(rows[0].votes).toBe(95);
                     })
                 })
+
+                    })
+            
         })
 
         it("400 - returns invalid request if request body doesn't contain vote", () => {
@@ -103,5 +111,22 @@ describe("my express project", () => {
             })
     
     })
+
+    describe("GET: /api/users", () => {
+        it("200 returns users", () => {
+            return request(app).get("/api/users").expect(200).then(({ body: { users } }) => {
+                expect(users).toHaveLength(4);
+                expect(users).toBeInstanceOf(Array);
+                users.forEach((user) => {
+                    expect(user).toEqual(expect.objectContaining({
+                    username: expect.any(String),
+                    name:expect.any(String),
+                    avatar_url:expect.any(String) 
+                    }))
+                })
+            })
+        })
+})
+
 })
 
