@@ -68,6 +68,27 @@ describe("my express project", () => {
           );
         });
     });
+
+    it("200- returns article by id (comment_count)", () => {
+      const id = 1;
+      return request(app)
+        .get(`/api/articles/${id}`)
+        .expect(200)
+        .then(({ body: { article } }) => {
+          expect(article).toEqual(
+            expect.objectContaining({
+              author: expect.any(String),
+              title: expect.any(String),
+              article_id: 1,
+              body: expect.any(String),
+              topic: expect.any(String),
+              created_at: expect.any(String),
+              votes: expect.any(Number),
+              comment_count: 11,
+            })
+          );
+        });
+    });
   });
 
   it("404 - returns page not found if id is not avilable PATCH /api/articles/99999", () => {
@@ -89,13 +110,14 @@ describe("my express project", () => {
         expect(message).toBe("invalid id");
       });
   });
+
   describe("PATCH: /api/articles/:article_id", () => {
+    const id = 1;
     it("200 - updates article by id", () => {
-      const id = 1;
       return request(app)
         .patch(`/api/articles/${id}`)
         .send({ inc_votes: -5 })
-        .expect(204)
+        .expect(200)
         .then(() => {
           return db
             .query(`SELECT votes FROM articles WHERE article_id=$1`, [id])
