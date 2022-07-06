@@ -15,5 +15,11 @@ SELECT articles.author,articles.title, articles.article_id,articles.topic,articl
 --TASK9
 SELECT comments.comment_id,comments.body,comments.votes,comments.created_at,comments.author FROM comments JOIN articles ON comments.article_id=articles.article_id WHERE articles.article_id=1;
 
+SELECT articles.*,count(comments.article_id) as comment_count FROM articles left JOIN comments ON comments.article_id=articles.article_id WHERE articles.article_id=4 GROUP BY articles.article_id;
 
+
+-- SELECT COUNT(ID) as NotNull, SUM(CASE WHEN ID IS NULL then 1 else 0 end) as NullCount
 -- psql -f ./test.sql>
+
+-- coalesce(MAX(post_id),0)
+

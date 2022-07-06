@@ -89,28 +89,48 @@ describe("my express project", () => {
           );
         });
     });
-  });
 
-  it("404 - returns page not found if id is not avilable PATCH /api/articles/99999", () => {
-    const id = 9999;
-    return request(app)
-      .get(`/api/articles/${id}`)
-      .expect(404)
-      .then(({ body: { message } }) => {
-        expect(message).toBe(`article ${id} not found.`);
-      });
-  });
+    it("200- returns article by id (comment_count)", () => {
+      const id = 2;
+      return request(app)
+        .get(`/api/articles/${id}`)
+        .expect(200)
+        .then(({ body: { article } }) => {
+          expect(article).toEqual(
+            expect.objectContaining({
+              author: expect.any(String),
+              title: expect.any(String),
+              article_id: 2,
+              body: expect.any(String),
+              topic: expect.any(String),
+              created_at: expect.any(String),
+              votes: expect.any(Number),
+              comment_count: 0,
+            })
+          );
+        });
+    });
 
-  it("400 - returns bad request if id is not a number PATCH /api/articles/not-an-id", () => {
-    const id = "not-an-id";
-    return request(app)
-      .get(`/api/articles/${id}`)
-      .expect(400)
-      .then(({ body: { message } }) => {
-        expect(message).toBe("invalid id");
-      });
-  });
+    it("404 - returns page not found if id is not avilable GET /api/articles/99999", () => {
+      const id = 9999;
+      return request(app)
+        .get(`/api/articles/${id}`)
+        .expect(404)
+        .then(({ body: { message } }) => {
+          expect(message).toBe(`article ${id} not found.`);
+        });
+    });
 
+    it("400 - returns bad request if id is not a number GET /api/articles/not-an-id", () => {
+      const id = "not-an-id";
+      return request(app)
+        .get(`/api/articles/${id}`)
+        .expect(400)
+        .then(({ body: { message } }) => {
+          expect(message).toBe("invalid id");
+        });
+    });
+  });
   describe("PATCH: /api/articles/:article_id", () => {
     const id = 1;
     it("200 - updates article by id", () => {

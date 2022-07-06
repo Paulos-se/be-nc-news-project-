@@ -81,3 +81,8 @@ You are now connected to database "nc_news_test" as user "paulosghirmai".
          18 | This morning, I showered for nine minutes.                                                                                                                                           |    16 | 2020-07-21 01:20:00 | butter_bridge
 (11 rows)
 
+ article_id |        title        | topic |  author  |                                                                                     body                                                                                      |     created_at      | votes | comment_count 
+------------+---------------------+-------+----------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------------+-------+---------------
+          4 | Student SUES Mitch! | mitch | rogersop | We all love Mitch and his wonderful, unique typing style. However, the volume of his typing has ALLEGEDLY burst another students eardrums, and they are now suing for damages | 2020-05-06 02:14:00 |     0 |             0
+(1 row)
+
