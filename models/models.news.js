@@ -25,7 +25,6 @@ exports.fetchArticleById = (id) => {
             message: `article ${id} not found.`,
           });
         }
-
         return rows[0];
       });
   }
@@ -53,3 +52,10 @@ exports.updateArticleVote = (vote, id) => {
       });
   }
 };
+
+exports.fetchUsers = () => {
+  return db.query(`SELECT * FROM users`).then(({ rows }) => {
+    return rows;
+  });
+};
+

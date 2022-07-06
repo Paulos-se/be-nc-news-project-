@@ -1,4 +1,5 @@
-const app = require("../app");
+
+  const app = require("../app");
 const db = require("../db/connection");
 const seed = require("../db/seeds/seed");
 
@@ -68,27 +69,6 @@ describe("my express project", () => {
           );
         });
     });
-
-    it("404 - returns page not found if id is not avilable, id=9999", () => {
-      const id = 9999;
-      return request(app)
-        .get(`/api/articles/${id}`)
-        .expect(404)
-        .then(({ body: { message } }) => {
-          expect(message).toBe(`article ${id} not found.`);
-        });
-    });
-
-    it("400 - returns bad request if id is not a valid number", () => {
-      const id = "not-valid-id";
-      return request(app)
-        .get(`/api/articles/${id}`)
-        .expect(400)
-        .then(({ body: { message } }) => {
-          expect(message).toBe("invalid id");
-        });
-    });
-
     it("200- returns article by id with the comment_count (comment count)", () => {
       const id = 1;
       return request(app)
@@ -110,10 +90,29 @@ describe("my express project", () => {
         });
     });
   });
+
+  it("404 - returns page not found if id is not avilable PATCH /api/articles/99999", () => {
+    const id = 9999;
+    return request(app)
+      .get(`/api/articles/${id}`)
+      .expect(404)
+      .then(({ body: { message } }) => {
+        expect(message).toBe(`article ${id} not found.`);
+      });
+  });
+
+  it("400 - returns bad request if id is not a number PATCH /api/articles/not-an-id", () => {
+    const id = "not-an-id";
+    return request(app)
+      .get(`/api/articles/${id}`)
+      .expect(400)
+      .then(({ body: { message } }) => {
+        expect(message).toBe("invalid id");
+      });
+  });
   describe("PATCH: /api/articles/:article_id", () => {
     it("200 - updates article by id", () => {
       const id = 1;
-
       return request(app)
         .patch(`/api/articles/${id}`)
         .send({ inc_votes: -5 })
@@ -146,6 +145,38 @@ describe("my express project", () => {
         .expect(400)
         .then(({ body: { message } }) => {
           expect(message).toBe("invalid update");
+        });
+    });
+  });
+
+  describe("GET:/api/userz", () => {
+    it("404 - returns page not found", () => {
+      return request(app)
+        .get("/api/userz")
+        .expect(404)
+        .then(({ body: { message } }) => {
+          expect(message).toBe("not found");
+        });
+    });
+  });
+
+  describe("GET: /api/users", () => {
+    it("200 returns users", () => {
+      return request(app)
+        .get("/api/users")
+        .expect(200)
+        .then(({ body: { users } }) => {
+          expect(users).toHaveLength(4);
+          expect(users).toBeInstanceOf(Array);
+          users.forEach((user) => {
+            expect(user).toEqual(
+              expect.objectContaining({
+                username: expect.any(String),
+                name: expect.any(String),
+                avatar_url: expect.any(String),
+              })
+            );
+          });
         });
     });
   });
