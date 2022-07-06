@@ -92,21 +92,6 @@ describe("my express project", () => {
   describe("PATCH: /api/articles/:article_id", () => {
     it("200 - updates article by id", () => {
       const id = 1;
-      // let beforePatch = 0;
-      // let afterPatch = 0;
-      // return db.query(`SELECT votes FROM articles WHERE article_id=$1`, [id]).then(({ rows }) => {
-      //     beforePatch = rows[0].votes;
-      //     return request(app).
-      //     patch(`/api/articles/${id}`).send({ inc_votes: -5 }).expect(204).then(() => {
-      //         return db.query(`SELECT votes FROM articles WHERE article_id=$1`, [id]).then(({ rows }) => {
-      //             afterPatch = rows[0].votes;
-      //             expect(afterPatch).toBe(beforePatch + (-5));
-      //             //expect(rows[0].votes).toBe(95);
-      //         })
-      //     })
-
-      //         })
-
       return request(app)
         .patch(`/api/articles/${id}`)
         .send({ inc_votes: -5 })
