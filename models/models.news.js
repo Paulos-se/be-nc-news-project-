@@ -106,6 +106,12 @@ exports.insertComment = (id, body, author) => {
       message: `Article ID is not valid.`,
     });
   }
+  if (!author || !body) {
+    return Promise.reject({
+      status: 400,
+      message: "bad formatted post",
+    });
+  }
   return db
     .query(`SELECT article_id FROM articles WHERE article_id=$1`, [id])
     .then(({ rows, rowCount }) => {

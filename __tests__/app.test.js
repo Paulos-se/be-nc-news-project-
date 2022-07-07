@@ -158,7 +158,7 @@ describe("my express project", () => {
         });
     });
 
-    it("400 - returns invalid request if request body  contain vote", () => {
+    it("400 - returns invalid request if request body  invalid contain vote", () => {
       const id = 5;
       return request(app)
         .patch(`/api/articles/${id}`)
@@ -292,7 +292,7 @@ describe("my express project", () => {
     });
   });
 
-  describe.only("POST /api/articles/:article_id/comments", () => {
+  describe("POST /api/articles/:article_id/comments", () => {
     it("200 responds with the posted comment", () => {
       const id = 2;
       return request(app)
@@ -312,20 +312,44 @@ describe("my express project", () => {
     test("404 responds with not found when there is no id", () => {
       const id = 100;
       return request(app)
-        .get(`/api/articles/${id}/comments`)
+        .post(`/api/articles/${id}/comments`)
+        .send({ author: "rogersop", body: "new comment" })
         .expect(404)
         .then(({ body: { message } }) => {
           expect(message).toBe(`Article ID ${id} does not exist.`);
         });
     });
 
-    test("400 responds with not found when there the id is invalid", () => {
+    it("400 responds with not valid when the id is invalid", () => {
       const id = "not-valid";
       return request(app)
-        .get(`/api/articles/${id}/comments`)
+        .post(`/api/articles/${id}/comments`)
+        .send({ author: "rogersop", body: "new comment" })
         .expect(400)
         .then(({ body: { message } }) => {
           expect(message).toBe(`Article ID is not valid.`);
+        });
+    });
+
+    it("400 responds with bad request when post malformatted", () => {
+      const id = 2;
+      return request(app)
+        .post(`/api/articles/${id}/comments`)
+        .send({ body: "new comment" })
+        .expect(400)
+        .then(({ body: { message } }) => {
+          expect(message).toBe("bad formatted post");
+        });
+    });
+
+    it("400 responds with invalid key when key constraint not met", () => {
+      const id = 2;
+      return request(app)
+        .post(`/api/articles/${id}/comments`)
+        .send({ author: "jonny", body: "new comment" })
+        .expect(400)
+        .then(({ body: { message } }) => {
+          expect(message).toBe("invalid key");
         });
     });
   });
