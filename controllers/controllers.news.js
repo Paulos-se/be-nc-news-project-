@@ -19,7 +19,6 @@ exports.getArticleById = (req, res, next) => {
       res.status(200).send({ article: result });
     })
     .catch((err) => {
-      // console.log(err);
       next(err);
     });
 };
@@ -27,10 +26,9 @@ exports.getArticleById = (req, res, next) => {
 exports.patchArticleVote = (req, res, next) => {
   const { inc_votes } = req.body;
   const { article_id } = req.params;
-
   updateArticleVote(inc_votes, article_id)
     .then((votes) => {
-      res.status(204).send({ votes });
+      res.status(200).send({ votes });
     })
     .catch((err) => {
       next(err);
