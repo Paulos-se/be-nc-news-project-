@@ -246,6 +246,33 @@ describe("my express project", () => {
           expect(articles).toBeSortedBy("created_at", { descending: true });
         });
     });
+
+    it("200 sort_by, which sorts the articles by any valid column (defaults to date)", () => {
+      return request(app)
+        .get("/api/articles?sort_by=votes")
+        .expect(200)
+        .then(({ body: { articles } }) => {
+          expect(articles).toBeSortedBy("votes", { descending: true });
+        });
+    });
+
+    it("200 order, which sorts the articles by any valid column (defaults to date)order(defaults to descending)", () => {
+      return request(app)
+        .get("/api/articles?sort_by=votes&order=asc")
+        .expect(200)
+        .then(({ body: { articles } }) => {
+          expect(articles).toBeSortedBy("votes", {});
+        });
+    });
+
+    it("400 sort_by, responds with bad request if sort column is invalid)", () => {
+      return request(app)
+        .get("/api/articles?sort_by=comment_id")
+        .expect(400)
+        .then(({ body: { message } }) => {
+          expect(message).toBe("invalid sort request");
+        });
+    });
   });
 
   describe("GET /api/articles/:article_id/comments", () => {

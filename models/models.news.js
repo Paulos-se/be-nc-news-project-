@@ -59,14 +59,31 @@ exports.fetchUsers = () => {
   });
 };
 
-exports.fetchArticles = () => {
-  return db
-    .query(
-      `SELECT articles.*,count(comments.article_id)::INT as comment_count FROM articles left JOIN comments ON comments.article_id=articles.article_id GROUP BY articles.article_id ORDER BY created_at DESC;`
-    )
-    .then(({ rows }) => {
-      return rows;
+exports.fetchArticles = (sort_by = "created_at", order = "DESC") => {
+  const validSorts = [
+    "article_id",
+    "comment_count",
+    "title",
+    "created_at",
+    "votes",
+    "topic",
+  ];
+
+  if (!validSorts.includes(sort_by)) {
+    return Promise.reject({
+      status: 400,
+      message: "invalid sort request",
     });
+  } else {
+    return db
+      .query(
+        `SELECT articles.*,count(comments.article_id)::INT as comment_count FROM articles left JOIN comments ON comments.article_id=articles.article_id GROUP BY articles.article_id ORDER BY ${sort_by} ${order};`
+      )
+
+      .then(({ rows }) => {
+        return rows;
+      });
+  }
 };
 
 exports.fetchComments = (id) => {
