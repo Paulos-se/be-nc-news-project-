@@ -17,6 +17,7 @@ app.patch("/api/articles/:article_id", patchArticleVote);
 app.get("/api/users", getUsers);
 app.get("/api/articles/", getArticles);
 app.get("/api/articles/:article_id/comments", getComments);
+app.post("/api/articles/:article_id/comments", postComments);
 
 app.use("*", (req, res) => {
   res.status(404).send({ message: "not found" });
@@ -25,6 +26,8 @@ app.use("*", (req, res) => {
 app.use((err, req, res, next) => {
   if (err.status && err.message) {
     res.status(err.status).send({ message: err.message });
+  } else if (err.code === "23503") {
+    res.status(400).send({ message: "invalid key" });
   } else {
     next(err);
   }
