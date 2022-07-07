@@ -82,3 +82,27 @@ Bear in mind, handling bad inputs from clients doesn't necessarily have to lead 
 ### GET `/api`
 
 -
+
+Responds with:
+
+an articles array of article objects, each of which should have the following properties:
+
+1 author which is the
+username from the users table
+
+2 title
+
+3 article_id
+
+4 topic
+
+5 created_at
+
+6 votes
+
+7 comment_count which is the total count of all the comments with this article_id -
+
+you should make use of queries to the database in order to achieve this.
+the articles should be sorted by date in descending order.
+
+Errors to Consider - add errors to handle as items to the checklist

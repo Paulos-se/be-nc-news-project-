@@ -58,3 +58,13 @@ exports.fetchUsers = () => {
     return rows;
   });
 };
+
+exports.fetchArticles = () => {
+  return db
+    .query(
+      `SELECT articles.*,count(comments.article_id)::INT as comment_count FROM articles left JOIN comments ON comments.article_id=articles.article_id GROUP BY articles.article_id ORDER BY created_at DESC;`
+    )
+    .then(({ rows }) => {
+      return rows;
+    });
+};
