@@ -258,21 +258,84 @@ describe("my express project", () => {
 
     it("200 order, which sorts the articles by any valid column (defaults to date)order(defaults to descending)", () => {
       return request(app)
-        .get("/api/articles?sort_by=votes&order=asc")
+        .get("/api/articles?sort_by=title&order=asc")
         .expect(200)
         .then(({ body: { articles } }) => {
-          expect(articles).toBeSortedBy("votes", {});
+          expect(articles).toBeSortedBy("title");
         });
     });
 
     it("400 sort_by, responds with bad request if sort column is invalid)", () => {
       return request(app)
-        .get("/api/articles?sort_by=comment_id")
+        .get("/api/articles?sort_by=comment_id&order=desc")
         .expect(400)
         .then(({ body: { message } }) => {
           expect(message).toBe("invalid sort request");
         });
     });
+
+    it("400 order, responds with bad request if order is invalid)", () => {
+      return request(app)
+        .get("/api/articles?sort_by=title&order=high")
+        .expect(400)
+        .then(({ body: { message } }) => {
+          expect(message).toBe("invalid order request");
+        });
+    });
+
+    it("400 sort_by, responds with bad request if sort column and sort order is invalid", () => {
+      return request(app)
+        .get("/api/articles?sort_by=comment_id&order=higher")
+        .expect(400)
+        .then(({ body: { message } }) => {
+          expect(message).toBe("invalid sort request");
+        });
+    });
+
+    it("200 filter by topic, responds with articles with the filter topic", () => {
+      return request(app)
+        .get("/api/articles")
+        .query({ topic: "mitch" })
+        .expect(200)
+        .then(({ body: { articles } }) => {
+          expect(articles).toHaveLength(11);
+          expect(articles).toBeInstanceOf(Array);
+        });
+    });
+
+    it("200 filter by topic, accepts a valid filter topic with no articles", () => {
+      return request(app)
+        .get("/api/articles")
+        .query({ topic: "paper" })
+        .expect(200)
+        .then(({ body: { articles } }) => {
+          expect(articles).toHaveLength(0);
+          expect(articles).toBeInstanceOf(Array);
+        });
+    });
+
+    it("404 responds with topic not found error when topic doesn't exist", () => {
+      const topic = "stone";
+      return request(app)
+        .get("/api/articles")
+        .query({ topic: topic })
+        .expect(404)
+        .then(({ body: { message } }) => {
+          expect(message).toBe(`Topic ${topic} not found`);
+        });
+    });
+
+    // need to carry on working here
+    // need to carry on working here
+    // need to carry on working here
+    // need to carry on working here
+    // need to carry on working here
+    // need to carry on working here
+    // need to carry on working here
+    // need to carry on working here
+    // need to carry on working here
+    // need to carry on working here
+    // need to carry on working here
   });
 
   describe("GET /api/articles/:article_id/comments", () => {
@@ -308,7 +371,7 @@ describe("my express project", () => {
         });
     });
 
-    test("400 responds with not found when there the id is invalid", () => {
+    test("400 responds with not found when the id is invalid", () => {
       const id = "not-valid";
       return request(app)
         .get(`/api/articles/${id}/comments`)
