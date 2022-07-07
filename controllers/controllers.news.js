@@ -4,6 +4,8 @@ const {
   updateArticleVote,
   fetchUsers,
   fetchArticles,
+  fetchComments,
+  insertComments,
 } = require("../models/models.news");
 
 exports.getTopics = (req, res, next) => {
@@ -46,4 +48,15 @@ exports.getArticles = (req, res, next) => {
   fetchArticles().then((articles) => {
     res.status(200).send({ articles });
   });
+};
+
+exports.getComments = (req, res, next) => {
+  const { article_id } = req.params;
+  fetchComments(article_id)
+    .then((comments) => {
+      res.status(200).send({ comments });
+    })
+    .catch((err) => {
+      next(err);
+    });
 };

@@ -106,3 +106,38 @@ you should make use of queries to the database in order to achieve this.
 the articles should be sorted by date in descending order.
 
 Errors to Consider - add errors to handle as items to the checklist
+
+9. GET /api/articles/:article_id/comments
+
+Description
+Edit
+Responds with:
+
+an array of comments for the given article_id of which each comment should have the following properties:
+
+-comment_id
+
+-votes
+
+-created_at
+
+-author which is the username from the users table
+
+-body
+
+Errors to Consider - add errors to handle as items to the checklist
+
+10. POST /api/articles/:article_id/comments
+
+Request body accepts:
+
+an object with the following properties:
+--username
+
+--body
+
+Responds with:
+
+the posted comment
+
+Errors to Consider - add errors to handle as items to the checklist

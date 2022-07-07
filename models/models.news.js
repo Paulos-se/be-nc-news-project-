@@ -68,3 +68,33 @@ exports.fetchArticles = () => {
       return rows;
     });
 };
+
+exports.fetchComments = (id) => {
+  if (isNaN(parseInt(id))) {
+    return Promise.reject({
+      status: 400,
+      message: `Article ID is not valid.`,
+    });
+  }
+  return db
+    .query(`SELECT article_id FROM articles WHERE article_id=$1`, [id])
+    .then(({ rows, rowCount }) => {
+      if (rowCount === 0) {
+        return Promise.reject({
+          status: 404,
+          message: `Article ID ${id} does not exist.`,
+        });
+      }
+      return rows[0].article_id;
+    })
+    .then((checked_id) => {
+      return db
+        .query(
+          `SELECT comments.comment_id,comments.votes,comments.created_at,comments.author,comments.body FROM comments LEFT JOIN articles ON articles.article_id=comments.article_id WHERE comments.article_id=$1`,
+          [checked_id]
+        )
+        .then(({ rows }) => {
+          return rows;
+        });
+    });
+};
