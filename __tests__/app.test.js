@@ -248,28 +248,38 @@ describe("my express project", () => {
     });
   });
 
-  // describe("GET /api/articles/:article_id/comments", () => {
-  //   it("200 esponds with:an array of comments for the given article_id", () => {
-  //     const id = 1;
-  //     return request(app)
-  //       .get("/api/articles/:article_id/comments")
-  //       .expect(200)
-  //       .then(({ body: { comments } }) => {
-  //         expect(comments).toBeInstanceOf(Array);
-  //         expect(comments).toHaveLength(11);
-  //         expect(comments.length).toBeGreaterThan(0);
-  //         comments.forEach((comment) => {
-  //           expect(comment).toEqual(
-  //             expect.objectContaining({
-  //               comment_id: id,
-  //               votes: expect.any(Number),
-  //               created_at: expect.any(String),
-  //               author: expect.any(String),
-  //               body: expect.any(String),
-  //             })
-  //           );
-  //         });
-  //       });
-  //   });
-  // });
+  describe("GET /api/articles/:article_id/comments", () => {
+    it("200 responds with:an array of comments for the given article_id", () => {
+      const id = 1;
+      return request(app)
+        .get(`/api/articles/${id}/comments`)
+        .expect(200)
+        .then(({ body: { comments } }) => {
+          expect(comments).toBeInstanceOf(Array);
+          expect(comments).toHaveLength(11);
+          expect(comments.length).toBeGreaterThan(0);
+          comments.forEach((comment) => {
+            expect(comment).toEqual(
+              expect.objectContaining({
+                comment_id: expect.any(Number),
+                votes: expect.any(Number),
+                created_at: expect.any(String),
+                author: expect.any(String),
+                body: expect.any(String),
+              })
+            );
+          });
+        });
+    });
+
+    test("404 responds with not found when there are no comments", () => {
+      const id = 2;
+      return request(app)
+        .get(`/api/articles/${id}/comments`)
+        .expect(404)
+        .then(({ body: { message } }) => {
+          expect(message).toBe(`No comments found for article id_${id}`);
+        });
+    });
+  });
 });

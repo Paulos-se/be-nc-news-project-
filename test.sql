@@ -24,3 +24,7 @@ SELECT articles.*,count(comments.article_id) as comment_count FROM articles left
 -- coalesce(MAX(post_id),0)
 
 -- SELECT articles.*, COUNT(comments.comment_id)::INT as comment_count FROM articles JOIN comments ON comments.article_id=articles.article_id WHERE articles.article_id=$1 GROUP BY articles.article_id;
+
+
+
+SELECT comments.comment_id,comments.votes,comments.created_at,comments.author,comments.body FROM comments left JOIN articles ON articles.article_id=comments.article_id WHERE comments.article_id=3;

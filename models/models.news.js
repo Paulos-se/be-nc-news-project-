@@ -68,3 +68,21 @@ exports.fetchArticles = () => {
       return rows;
     });
 };
+
+exports.fetchComments = (id) => {
+  return db
+    .query(
+      `SELECT comments.comment_id,comments.votes,comments.created_at,comments.author,comments.body FROM comments LEFT JOIN articles ON articles.article_id=comments.article_id WHERE comments.article_id=$1`,
+      [id]
+    )
+    .then(({ rows, rowCount }) => {
+      if (rowCount === 0) {
+        return Promise.reject({
+          status: 404,
+          message: `No comments found for article id_${id}`,
+        });
+      } else {
+        return rows;
+      }
+    });
+};

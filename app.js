@@ -6,6 +6,7 @@ const {
   patchArticleVote,
   getUsers,
   getArticles,
+  getComments,
 } = require("./controllers/controllers.news");
 app.use(express.json());
 
@@ -14,6 +15,7 @@ app.get("/api/articles/:article_id", getArticleById);
 app.patch("/api/articles/:article_id", patchArticleVote);
 app.get("/api/users", getUsers);
 app.get("/api/articles/", getArticles);
+app.get("/api/articles/:article_id/comments", getComments);
 
 app.use("*", (req, res) => {
   res.status(404).send({ message: "not found" });
