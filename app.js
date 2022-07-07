@@ -17,6 +17,7 @@ app.patch("/api/articles/:article_id", patchArticleVote);
 app.get("/api/users", getUsers);
 app.get("/api/articles/", getArticles);
 app.get("/api/articles/:article_id/comments", getComments);
+app.post("/api/articles/:article_id/comments", postComments);
 
 app.use("*", (req, res) => {
   res.status(404).send({ message: "not found" });

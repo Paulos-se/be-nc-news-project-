@@ -291,4 +291,42 @@ describe("my express project", () => {
         });
     });
   });
+
+  describe.only("POST /api/articles/:article_id/comments", () => {
+    it("200 responds with the posted comment", () => {
+      const id = 2;
+      return request(app)
+        .post(`/api/articles/${id}/comments`)
+        .send({ author: "rogersop", body: "new comment" })
+        .expect(200)
+        .then(({ body: { comment } }) => {
+          expect(comment).toEqual(
+            expect.objectContaining({
+              author: "rogersop",
+              body: "new comment",
+            })
+          );
+        });
+    });
+
+    test("404 responds with not found when there is no id", () => {
+      const id = 100;
+      return request(app)
+        .get(`/api/articles/${id}/comments`)
+        .expect(404)
+        .then(({ body: { message } }) => {
+          expect(message).toBe(`Article ID ${id} does not exist.`);
+        });
+    });
+
+    test("400 responds with not found when there the id is invalid", () => {
+      const id = "not-valid";
+      return request(app)
+        .get(`/api/articles/${id}/comments`)
+        .expect(400)
+        .then(({ body: { message } }) => {
+          expect(message).toBe(`Article ID is not valid.`);
+        });
+    });
+  });
 });

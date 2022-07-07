@@ -98,3 +98,33 @@ exports.fetchComments = (id) => {
         });
     });
 };
+
+exports.insertComment = (id, body, author) => {
+  if (isNaN(parseInt(id))) {
+    return Promise.reject({
+      status: 400,
+      message: `Article ID is not valid.`,
+    });
+  }
+  return db
+    .query(`SELECT article_id FROM articles WHERE article_id=$1`, [id])
+    .then(({ rows, rowCount }) => {
+      if (rowCount === 0) {
+        return Promise.reject({
+          status: 404,
+          message: `Article ID ${id} does not exist.`,
+        });
+      }
+      return rows[0].article_id;
+    })
+    .then((checked_id) => {
+      return db
+        .query(
+          `INSERT INTO comments (body,article_id,author)VALUES($1,$2,$3) RETURNING *`,
+          [body, checked_id, author]
+        )
+        .then(({ rows }) => {
+          return rows[0];
+        });
+    });
+};
