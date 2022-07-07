@@ -250,14 +250,13 @@ describe("my express project", () => {
 
   describe("GET /api/articles/:article_id/comments", () => {
     it("200 responds with:an array of comments for the given article_id", () => {
-      const id = 1;
+      const id = 2;
       return request(app)
         .get(`/api/articles/${id}/comments`)
         .expect(200)
         .then(({ body: { comments } }) => {
           expect(comments).toBeInstanceOf(Array);
-          expect(comments).toHaveLength(11);
-          expect(comments.length).toBeGreaterThan(0);
+          expect(comments).toHaveLength(0);
           comments.forEach((comment) => {
             expect(comment).toEqual(
               expect.objectContaining({
@@ -272,13 +271,23 @@ describe("my express project", () => {
         });
     });
 
-    test("404 responds with not found when there are no comments", () => {
-      const id = 2;
+    test("404 responds with not found when there is no id", () => {
+      const id = 100;
       return request(app)
         .get(`/api/articles/${id}/comments`)
         .expect(404)
         .then(({ body: { message } }) => {
-          expect(message).toBe(`No comments found for article id_${id}`);
+          expect(message).toBe(`Article ID ${id} does not exist.`);
+        });
+    });
+
+    test("400 responds with not found when there the id is invalid", () => {
+      const id = "not-valid";
+      return request(app)
+        .get(`/api/articles/${id}/comments`)
+        .expect(400)
+        .then(({ body: { message } }) => {
+          expect(message).toBe(`Article ID is not valid.`);
         });
     });
   });

@@ -5,6 +5,7 @@ const {
   fetchUsers,
   fetchArticles,
   fetchComments,
+  insertComments,
 } = require("../models/models.news");
 
 exports.getTopics = (req, res, next) => {
