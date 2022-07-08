@@ -60,14 +60,16 @@ exports.fetchArticles = (sort_by = "created_at", order = "DESC", filter_by) => {
   const validOrder = ["ASC", "DESC"];
 
   let queryValue = [];
-  let queryString = `SELECT articles.*,COUNT(comments.article_id)::INT AS comment_count FROM articles 
-  LEFT JOIN comments ON comments.article_id=articles.article_id
-  GROUP BY articles.article_id
-  ORDER BY ${sort_by} ${order_by};`;
+  let queryOne = `SELECT articles.*,COUNT(comments.article_id)::INT AS comment_count FROM articles 
+  LEFT JOIN comments ON comments.article_id=articles.article_id `;
+  let queryThree = ` GROUP BY articles.article_id
+  ORDER BY ${sort_by} ${order_by}`;
+  let queryTwo = ` WHERE topic=$1 `;
+  let queryString = queryOne + queryThree;
 
   if (filter_by) {
     queryValue.push(filter_by);
-    queryString = `SELECT articles.article_id,articles.title,articles.author,articles.votes,articles.topic,articles.created_at,COUNT(comments.article_id)::INT AS comment_count FROM articles left JOIN comments ON comments.article_id=articles.article_id WHERE topic=$1 GROUP BY articles.article_id  ORDER BY ${sort_by} ${order}`;
+    queryString = queryOne + queryTwo + queryThree;
   }
 
   if (!validSorts.includes(sort_by)) {
