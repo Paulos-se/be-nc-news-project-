@@ -264,7 +264,7 @@ describe("my express project", () => {
         });
     });
 
-    it("200 order, which orders articles in default specified order", () => {
+    it("200 order, which orders articles in specified order", () => {
       return request(app)
         .get("/api/articles?order=asc")
         .then(({ body: { articles } }) => {
