@@ -7,6 +7,7 @@ const {
   fetchComments,
   insertComment,
   checkTopicExists,
+  deleteComment,
 } = require("../models/models.news");
 
 exports.getTopics = (req, res, next) => {

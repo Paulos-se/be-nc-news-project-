@@ -8,6 +8,7 @@ const {
   getArticles,
   getComments,
   postComments,
+  removeComment,
 } = require("./controllers/controllers.news");
 app.use(express.json());
 
@@ -18,7 +19,7 @@ app.get("/api/users", getUsers);
 app.get("/api/articles/", getArticles);
 app.get("/api/articles/:article_id/comments", getComments);
 app.post("/api/articles/:article_id/comments", postComments);
-
+app.delete("/api/comments/:comment_id", removeComment);
 app.use("*", (req, res) => {
   res.status(404).send({ message: "not found" });
 });
@@ -33,7 +34,7 @@ app.use((err, req, res, next) => {
   }
 });
 
-app.use((err, req, res) => {
+app.use((err, req, res, next) => {
   res.status(500).send({ message: "server error" });
 });
 

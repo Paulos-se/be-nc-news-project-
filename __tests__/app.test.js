@@ -459,4 +459,40 @@ describe("my express project", () => {
         });
     });
   });
+
+  describe("DELETE: /api/comments/:comment_id", () => {
+    it("204 deletes given comment by comment_id", () => {
+      const id = 4;
+      return request(app)
+        .delete(`/api/comments/${id}`)
+        .expect(204)
+        .then(() => {
+          return db
+            .query(`SELECT comment_id FROM comments WHERE comment_id=$1`, [id])
+            .then(({ rows }) => {
+              expect(rows.length).toBe(0);
+            });
+        });
+    });
+
+    it("404 responds with comment id  does not exist when it doesn't", () => {
+      const id = 19;
+      return request(app)
+        .delete(`/api/comments/${id}`)
+        .expect(404)
+        .then(({ body: { message } }) => {
+          expect(message).toBe(`comment ${id} does not exist`);
+        });
+    });
+
+    it("400 responds with bad request when comment id isn't valid", () => {
+      const id = "invalid";
+      return request(app)
+        .delete(`/api/comments/${id}`)
+        .expect(400)
+        .then(({ body: { message } }) => {
+          expect(message).toBe(`invalid comment id`);
+        });
+    });
+  });
 });
