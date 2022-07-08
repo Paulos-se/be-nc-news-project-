@@ -32,3 +32,6 @@ SELECT comments.comment_id,comments.votes,comments.created_at,comments.author,co
 
 
 SELECT articles.article_id,articles.title,articles.author,articles.votes,articles.topic,articles.created_at,count(comments.article_id)::INT as hello_yoyo FROM articles left JOIN comments ON comments.article_id=articles.article_id WHERE topic='mitch' GROUP BY articles.article_id  ORDER BY created_at asc;
+
+
+`SELECT articles.*,count(comments.article_id)::INT as comment_count FROM articles left JOIN comments ON comments.article_id=articles.article_id GROUP BY articles.article_id ORDER BY ${sort_by} ${order_by};`

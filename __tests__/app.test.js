@@ -256,6 +256,22 @@ describe("my express project", () => {
         });
     });
 
+    it("200 order, which orders articles in default order", () => {
+      return request(app)
+        .get("/api/articles")
+        .then(({ body: { articles } }) => {
+          expect(articles).toBeSortedBy("created_at", { descending: true });
+        });
+    });
+
+    it("200 order, which orders articles in default specified order", () => {
+      return request(app)
+        .get("/api/articles?order=asc")
+        .then(({ body: { articles } }) => {
+          expect(articles).toBeSortedBy("created_at");
+        });
+    });
+
     it("200 order, which sorts the articles by any valid column (defaults to date)order(defaults to descending)", () => {
       return request(app)
         .get("/api/articles?sort_by=title&order=asc")
@@ -294,12 +310,25 @@ describe("my express project", () => {
 
     it("200 filter by topic, responds with articles with the filter topic", () => {
       return request(app)
-        .get("/api/articles")
-        .query({ topic: "mitch" })
+        .get("/api/articles?topic=mitch")
         .expect(200)
         .then(({ body: { articles } }) => {
+          console.log(articles);
           expect(articles).toHaveLength(11);
           expect(articles).toBeInstanceOf(Array);
+          articles.forEach((article) => {
+            expect(article).toEqual(
+              expect.objectContaining({
+                article_id: expect.any(Number),
+                title: expect.any(String),
+                author: expect.any(String),
+                votes: expect.any(Number),
+                topic: expect.any(String),
+                created_at: expect.any(String),
+                comment_count: expect.any(Number),
+              })
+            );
+          });
         });
     });
 
