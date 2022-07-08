@@ -313,7 +313,6 @@ describe("my express project", () => {
         .get("/api/articles?topic=mitch")
         .expect(200)
         .then(({ body: { articles } }) => {
-          console.log(articles);
           expect(articles).toHaveLength(11);
           expect(articles).toBeInstanceOf(Array);
           articles.forEach((article) => {
