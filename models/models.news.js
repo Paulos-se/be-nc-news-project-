@@ -1,4 +1,5 @@
 const db = require("../db/connection");
+const fs = require("fs/promises");
 
 exports.fetchTopics = () => {
   return db.query(`SELECT * FROM topics;`).then(({ rows }) => {
@@ -184,6 +185,12 @@ exports.deleteComment = (id) => {
       }
       return rows[0];
     });
+};
+
+exports.fetchJson = () => {
+  return fs.readFile("./endpoints.json", "utf-8").then((data) => {
+    return JSON.parse(data);
+  });
 };
 
 exports.checkTopicExists = (topic) => {

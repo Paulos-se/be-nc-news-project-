@@ -8,6 +8,7 @@ const {
   insertComment,
   checkTopicExists,
   deleteComment,
+  fetchJson,
 } = require("../models/models.news");
 
 exports.getTopics = (req, res, next) => {
@@ -85,6 +86,16 @@ exports.removeComment = (req, res, next) => {
   deleteComment(comment_id)
     .then(() => {
       res.sendStatus(204);
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
+
+exports.getJson = (req, res, next) => {
+  fetchJson()
+    .then((endpoints) => {
+      res.status(200).send(endpoints);
     })
     .catch((err) => {
       next(err);
