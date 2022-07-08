@@ -1,8 +1,7 @@
 const app = require("../app");
 const db = require("../db/connection");
 const seed = require("../db/seeds/seed");
-const express = require("express");
-app.use(express.json());
+
 const {
   articleData,
   commentData,
@@ -640,6 +639,16 @@ describe("my express project", () => {
         .expect(200)
         .then((res) => {
           expect(res.body).toEqual(endpoints);
+        });
+    });
+  });
+  describe("GET /apg", () => {
+    it("404 responds with page not found", () => {
+      return request(app)
+        .get("/apg")
+        .expect(404)
+        .then(({ body: { message } }) => {
+          expect(message).toBe("not found");
         });
     });
   });
