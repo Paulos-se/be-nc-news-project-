@@ -9,6 +9,7 @@ const {
   checkTopicExists,
   deleteComment,
   fetchJson,
+  checkId,
 } = require("../models/models.news");
 
 exports.getTopics = (req, res, next) => {
@@ -17,28 +18,27 @@ exports.getTopics = (req, res, next) => {
   });
 };
 
-exports.getArticleById = (req, res, next) => {
-  const { article_id } = req.params;
-
-  fetchArticleById(article_id)
-    .then((result) => {
-      res.status(200).send({ article: result });
-    })
-    .catch((err) => {
-      next(err);
-    });
+exports.getArticleById = async (req, res, next) => {
+  try {
+    const { article_id } = req.params;
+    await checkId(article_id);
+    const result = await fetchArticleById(article_id);
+    res.status(200).send({ article: result });
+  } catch (err) {
+    next(err);
+  }
 };
 
-exports.patchArticleVote = (req, res, next) => {
-  const { inc_votes } = req.body;
-  const { article_id } = req.params;
-  updateArticleVote(inc_votes, article_id)
-    .then((votes) => {
-      res.status(200).send({ votes });
-    })
-    .catch((err) => {
-      next(err);
-    });
+exports.patchArticleVote = async (req, res, next) => {
+  try {
+    const { inc_votes } = req.body;
+    const { article_id } = req.params;
+    await checkId(article_id);
+    const votes = await updateArticleVote(inc_votes, article_id);
+    res.status(200).send({ votes });
+  } catch (err) {
+    next(err);
+  }
 };
 
 exports.getUsers = (req, res, next) => {
@@ -58,27 +58,27 @@ exports.getArticles = async (req, res, next) => {
   }
 };
 
-exports.getComments = (req, res, next) => {
-  const { article_id } = req.params;
-  fetchComments(article_id)
-    .then((comments) => {
-      res.status(200).send({ comments });
-    })
-    .catch((err) => {
-      next(err);
-    });
+exports.getComments = async (req, res, next) => {
+  try {
+    const { article_id } = req.params;
+    await checkId(article_id);
+    const comments = await fetchComments(article_id);
+    res.status(200).send({ comments });
+  } catch (err) {
+    next(err);
+  }
 };
 
-exports.postComments = (req, res, next) => {
-  const { author, body } = req.body;
-  const { article_id } = req.params;
-  insertComment(article_id, body, author)
-    .then((comment) => {
-      res.status(200).send({ comment });
-    })
-    .catch((err) => {
-      next(err);
-    });
+exports.postComments = async (req, res, next) => {
+  try {
+    const { author, body } = req.body;
+    const { article_id } = req.params;
+    await checkId(article_id);
+    const comment = await insertComment(article_id, body, author);
+    res.status(200).send({ comment });
+  } catch (err) {
+    next(err);
+  }
 };
 
 exports.removeComment = (req, res, next) => {

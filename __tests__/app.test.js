@@ -117,7 +117,7 @@ describe("my express project", () => {
         .get(`/api/articles/${id}`)
         .expect(404)
         .then(({ body: { message } }) => {
-          expect(message).toBe(`article ${id} not found.`);
+          expect(message).toBe("Article ID 9999 does not exist.");
         });
     });
 
@@ -127,7 +127,7 @@ describe("my express project", () => {
         .get(`/api/articles/${id}`)
         .expect(400)
         .then(({ body: { message } }) => {
-          expect(message).toBe("invalid id");
+          expect(message).toBe("Article ID is not valid.");
         });
     });
   });
@@ -166,6 +166,28 @@ describe("my express project", () => {
         .expect(400)
         .then(({ body: { message } }) => {
           expect(message).toBe("invalid update");
+        });
+    });
+
+    it("404 - returns page not found if id is not avilable PATCH /api/articles/99999", () => {
+      const id = 9999;
+      return request(app)
+        .patch(`/api/articles/${id}`)
+        .send({ inc_votes: -5 })
+        .expect(404)
+        .then(({ body: { message } }) => {
+          expect(message).toBe("Article ID 9999 does not exist.");
+        });
+    });
+
+    it("400 - returns bad request if id is not a number PATCH /api/articles/not-an-id", () => {
+      const id = "not-an-id";
+      return request(app)
+        .patch(`/api/articles/${id}`)
+        .send({ inc_votes: -5 })
+        .expect(400)
+        .then(({ body: { message } }) => {
+          expect(message).toBe("Article ID is not valid.");
         });
     });
   });
