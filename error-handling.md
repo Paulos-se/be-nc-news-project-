@@ -141,3 +141,14 @@ Responds with:
 the posted comment
 
 Errors to Consider - add errors to handle as items to the checklist
+
+11 DELETE /api/comments/:comment_id
+
+DELETE /api/comments/:comment_id
+Should:
+
+delete the given comment by comment_id
+Responds with:
+
+status 204 and no content
+Errors to Consider - add errors to handle as items to the checklist
