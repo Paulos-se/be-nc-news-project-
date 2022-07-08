@@ -324,18 +324,6 @@ describe("my express project", () => {
           expect(message).toBe(`Topic ${topic} not found`);
         });
     });
-
-    // need to carry on working here
-    // need to carry on working here
-    // need to carry on working here
-    // need to carry on working here
-    // need to carry on working here
-    // need to carry on working here
-    // need to carry on working here
-    // need to carry on working here
-    // need to carry on working here
-    // need to carry on working here
-    // need to carry on working here
   });
 
   describe("GET /api/articles/:article_id/comments", () => {
