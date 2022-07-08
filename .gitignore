@@ -1,3 +1,6 @@
 node_modules
 .env.*
 .env-example
+test.sql
+test.text
+output.txt

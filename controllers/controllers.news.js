@@ -6,6 +6,7 @@ const {
   fetchArticles,
   fetchComments,
   insertComment,
+  checkTopicExists,
 } = require("../models/models.news");
 
 exports.getTopics = (req, res, next) => {
@@ -44,10 +45,15 @@ exports.getUsers = (req, res, next) => {
   });
 };
 
-exports.getArticles = (req, res, next) => {
-  fetchArticles().then((articles) => {
+exports.getArticles = async (req, res, next) => {
+  try {
+    const { sort_by, order, topic } = req.query;
+    const articles = await fetchArticles(sort_by, order, topic);
+    await checkTopicExists(topic);
     res.status(200).send({ articles });
-  });
+  } catch (err) {
+    next(err);
+  }
 };
 
 exports.getComments = (req, res, next) => {

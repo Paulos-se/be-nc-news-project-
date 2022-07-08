@@ -246,6 +246,113 @@ describe("my express project", () => {
           expect(articles).toBeSortedBy("created_at", { descending: true });
         });
     });
+
+    it("200 sort_by, which sorts the articles by any valid column (defaults to date)", () => {
+      return request(app)
+        .get("/api/articles?sort_by=votes")
+        .expect(200)
+        .then(({ body: { articles } }) => {
+          expect(articles).toBeSortedBy("votes", { descending: true });
+        });
+    });
+
+    it("200 order, which orders articles in default order", () => {
+      return request(app)
+        .get("/api/articles")
+        .then(({ body: { articles } }) => {
+          expect(articles).toBeSortedBy("created_at", { descending: true });
+        });
+    });
+
+    it("200 order, which orders articles in specified order", () => {
+      return request(app)
+        .get("/api/articles?order=asc")
+        .then(({ body: { articles } }) => {
+          expect(articles).toBeSortedBy("created_at");
+        });
+    });
+
+    it("200 order, which sorts the articles by any valid column (defaults to date)order(defaults to descending)", () => {
+      return request(app)
+        .get("/api/articles?sort_by=title&order=asc")
+        .expect(200)
+        .then(({ body: { articles } }) => {
+          expect(articles).toBeSortedBy("title");
+        });
+    });
+
+    it("400 sort_by, responds with bad request if sort column is invalid)", () => {
+      return request(app)
+        .get("/api/articles?sort_by=comment_id&order=desc")
+        .expect(400)
+        .then(({ body: { message } }) => {
+          expect(message).toBe("invalid sort request");
+        });
+    });
+
+    it("400 order, responds with bad request if order is invalid)", () => {
+      return request(app)
+        .get("/api/articles?sort_by=title&order=high")
+        .expect(400)
+        .then(({ body: { message } }) => {
+          expect(message).toBe("invalid order request");
+        });
+    });
+
+    it("400 sort_by, responds with bad request if sort column and sort order is invalid", () => {
+      return request(app)
+        .get("/api/articles?sort_by=comment_id&order=higher")
+        .expect(400)
+        .then(({ body: { message } }) => {
+          expect(message).toBe("invalid sort request");
+        });
+    });
+
+    it("200 filter by topic, responds with articles with the filter topic", () => {
+      return request(app)
+        .get("/api/articles?topic=mitch")
+        .expect(200)
+        .then(({ body: { articles } }) => {
+          console.log(articles);
+          expect(articles).toHaveLength(11);
+          expect(articles).toBeInstanceOf(Array);
+          articles.forEach((article) => {
+            expect(article).toEqual(
+              expect.objectContaining({
+                article_id: expect.any(Number),
+                title: expect.any(String),
+                author: expect.any(String),
+                votes: expect.any(Number),
+                topic: expect.any(String),
+                created_at: expect.any(String),
+                comment_count: expect.any(Number),
+              })
+            );
+          });
+        });
+    });
+
+    it("200 filter by topic, accepts a valid filter topic with no articles", () => {
+      return request(app)
+        .get("/api/articles")
+        .query({ topic: "paper" })
+        .expect(200)
+        .then(({ body: { articles } }) => {
+          expect(articles).toHaveLength(0);
+          expect(articles).toBeInstanceOf(Array);
+        });
+    });
+
+    it("404 responds with topic not found error when topic doesn't exist", () => {
+      const topic = "stone";
+      return request(app)
+        .get("/api/articles")
+        .query({ topic: topic })
+        .expect(404)
+        .then(({ body: { message } }) => {
+          expect(message).toBe(`Topic ${topic} not found`);
+        });
+    });
   });
 
   describe("GET /api/articles/:article_id/comments", () => {
@@ -281,7 +388,7 @@ describe("my express project", () => {
         });
     });
 
-    test("400 responds with not found when there the id is invalid", () => {
+    test("400 responds with not found when the id is invalid", () => {
       const id = "not-valid";
       return request(app)
         .get(`/api/articles/${id}/comments`)
