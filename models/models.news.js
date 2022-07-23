@@ -8,7 +8,7 @@ exports.fetchTopics = () => {
 };
 
 exports.fetchArticleById = (id) => {
-  if (isNaN(parseInt(id))) {
+  if (isNaN(Number(id))) {
     return Promise.reject({
       status: 400,
       message: `invalid id`,
@@ -37,7 +37,7 @@ exports.updateArticleVote = (vote, id) => {
       status: 400,
       message: "bad formatted update",
     });
-  } else if (isNaN(parseInt(vote))) {
+  } else if (isNaN(Number(vote))) {
     return Promise.reject({
       status: 400,
       message: "invalid update",
@@ -101,7 +101,7 @@ exports.fetchArticles = (sort_by = "created_at", order = "DESC", filter_by) => {
 };
 
 exports.fetchComments = (id) => {
-  if (isNaN(parseInt(id))) {
+  if (isNaN(Number(id))) {
     return Promise.reject({
       status: 400,
       message: `Article ID is not valid.`,
@@ -131,7 +131,7 @@ exports.fetchComments = (id) => {
 };
 
 exports.insertComment = (id, body, author) => {
-  if (isNaN(parseInt(id))) {
+  if (isNaN(Number(id))) {
     return Promise.reject({
       status: 400,
       message: `Article ID is not valid.`,
@@ -167,7 +167,7 @@ exports.insertComment = (id, body, author) => {
 };
 
 exports.deleteComment = (id) => {
-  if (isNaN(parseInt(id))) {
+  if (isNaN(Number(id))) {
     return Promise.reject({
       status: 400,
       message: `invalid comment id`,
