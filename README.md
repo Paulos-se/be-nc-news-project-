@@ -8,7 +8,7 @@ Alternatively you can check the hosted version of the API on https://nc-news-pa.
 
 The project has already a database folder with a setup.sql file to enable you set-up two databases, one for development and the other for testing. Both test and dev data are included in the data subfolder. There is also a seeds subfolder that contains the files that will enable you to seed the database by executing the npm scripts mentioned in the package.json.
 
-If you want to use this API you will need to create two .env files for your project: .env.test and .env.development in the root directory. Into each, add PGDATABASE=<database_name_here>, with the correct database name for that environment (see /db/setup.sql for the database names).Make sure that these .env files are .gitignored. You will also need to install all the dependencies. Namely node-postgress to interact with the databases, dotenv to enable you to target a specific database and express to enable you to make requests to your database and fetch data, and other devDepenedcies by executing npm install.
+If you want to use this API you will need to create two .env files for your project: .env.test and .env.development in the root directory. Into each, add PGDATABASE=<database_name_here>, with the correct database name for that environment (see /db/setup.sql for the database names).Make sure that these .env files are .gitignored. You will also need to install all the dependencies. Namely node-postgress to interact with the databases, dotenv to enable you to target a specific database and express to enable you to respond to requests to your database, and other devDepenedcies by executing npm install.
 
 Then seed the databases with the script npm run setup-dbs && npm run seed
 
