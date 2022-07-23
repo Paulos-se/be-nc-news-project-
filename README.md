@@ -1,8 +1,8 @@
 # Paulos's Northcoders News API
 
-Dear developer this project is designed to retrieve data using an API from Northcoders news database. The data includes news articles with comments,votes,topics and scores related to them. Please refer to the endpoints.json file in the root directory to see all the endpoints and their use.
+Dear developer this project is designed to retrieve data using this API, from the Northcoders news database. The data includes news articles with comments, votes, topics and scores related to them. Please refer to the endpoints.json file in the root directory to see all the endpoints and their use.
 
-Alternatively you can check the hosted version of the API on https://nc-news-pa.herokuapp.com/api
+Alternatively you can check the hosted version of the API on heroku https://nc-news-pa.herokuapp.com/api
 
 ## User guide
 
