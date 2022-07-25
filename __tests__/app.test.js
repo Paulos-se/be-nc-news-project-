@@ -511,7 +511,7 @@ describe("my express project", () => {
           },
         },
         "GET /api/articles": {
-          description: "serves an array of all topics",
+          description: "serves an array of all articles",
           queries: ["author", "topic", "sort_by", "order"],
           exampleResponse: {
             articles: [
