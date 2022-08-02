@@ -242,7 +242,11 @@ Responds with:
 
 ---
 
----
+You can use the jest library to run your tests by executing
+
+```json
+npm test
+```
 
 ## Minimum versions of Node.js and Postgres needed to run the project
 
