@@ -6,7 +6,20 @@
     "description": "serves an array of all topics",
     "queries": [],
     "exampleResponse": {
-      "topics": [{ "slug": "football", "description": "Footie!" }]
+      "topics": [
+        {
+          "description": "Code is love, code is life",
+          "slug": "coding"
+        },
+        {
+          "description": "FOOTIE!",
+          "slug": "football"
+        },
+        {
+          "description": "Hey good looking, what you got cooking?",
+          "slug": "cooking"
+        }
+      ]
     }
   },
   "GET /api/articles": {
