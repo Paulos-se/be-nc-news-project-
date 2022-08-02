@@ -83,21 +83,12 @@ _This is a summary of all the endpoints. More detail about each endpoint is furt
 GET /api/topics
 GET /api/articles/:article_id
 PATCH /api/articles/:article_id
+GET /api/users
 GET /api/articles
 GET /api/articles/:article_id/comments
 POST /api/articles/:article_id/comments
 DELETE /api/comments/:comment_id
 GET /api
-```
-
-> Hosting and README time!
-
-**Next endpoints to work through**
-
-```http
-GET /api/users
-GET /api/users/:username
-PATCH /api/comments/:comment_id
 ```
 
 ---
@@ -125,7 +116,7 @@ All of your endpoints should send the responses specified below in an **object**
 
 ---
 
-### Essential Routes
+### Routes
 
 #### **GET /api/topics**
 
@@ -171,6 +162,15 @@ Request body accepts:
 Responds with:
 
 - the updated article
+
+---
+
+#### **GET /api/users**
+
+Responds with:
+
+- an array of objects, each object should have the following property:
+  - `username`
 
 ---
 
@@ -238,47 +238,9 @@ Responds with:
 
 Responds with:
 
-- JSON describing all the available endpoints on your API, see the [endpoints.json](./endpoints.json) for an (incomplete) example that you could build on, or create your own from scratch!
+- JSON describing all the available endpoints on your API.
 
 ---
-
-#### **GET /api/users**
-
-Responds with:
-
-- an array of objects, each object should have the following property:
-  - `username`
-
----
-
-#### **GET /api/users/:username**
-
-Responds with:
-
-- a user object which should have the following properties:
-  - `username`
-  - `avatar_url`
-  - `name`
-
----
-
-#### **PATCH /api/comments/:comment_id**
-
-Request body accepts:
-
-- an object in the form `{ inc_votes: newVote }`
-
-  - `newVote` will indicate how much the `votes` property in the database should be updated by
-
-  e.g.
-
-  `{ inc_votes : 1 }` would increment the current comment's vote property by 1
-
-  `{ inc_votes : -1 }` would decrement the current comment's vote property by 1
-
-Responds with:
-
-- the updated comment
 
 ---
 
