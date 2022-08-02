@@ -284,6 +284,6 @@ Responds with:
 
 ## Minimum versions of Node.js and Postgres needed to run the project
 
-Node version 18.0.0
+Node version 16.16.0
 
 postgress version 8.7.3
