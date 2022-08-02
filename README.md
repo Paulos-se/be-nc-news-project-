@@ -1,4 +1,6 @@
-# Northcoders News API
+# Paulos's News API
+
+see hosted version here https://nc-news-pa.herokuapp.com/api
 
 ## Background
 
