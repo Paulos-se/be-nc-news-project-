@@ -16,7 +16,7 @@ exports.fetchArticleById = (id) => {
   } else {
     return db
       .query(
-        `SELECT articles.*,count(comments.article_id)::INT as comment_count FROM articles left JOIN comments ON comments.article_id=articles.article_id WHERE articles.article_id=$1 GROUP BY articles.article_id;`,
+        `SELECT articles.*,COUNT(comments.article_id)::INT as comment_count FROM articles LEFT JOIN comments ON comments.article_id=articles.article_id WHERE articles.article_id=$1 GROUP BY articles.article_id;`,
         [id]
       )
       .then(({ rows, rowCount }) => {
@@ -37,6 +37,11 @@ exports.updateArticleVote = (vote, id) => {
       status: 400,
       message: "bad formatted update",
     });
+  } else if (isNaN(Number(id))) {
+    return Promise.reject({
+      status: 400,
+      message: `invalid id`,
+    });
   } else if (isNaN(Number(vote))) {
     return Promise.reject({
       status: 400,
@@ -48,7 +53,13 @@ exports.updateArticleVote = (vote, id) => {
         `UPDATE articles SET votes=votes+${vote} WHERE article_id=$1 RETURNING *`,
         [id]
       )
-      .then(({ rows }) => {
+      .then(({ rows, rowCount }) => {
+        if (rowCount === 0) {
+          return Promise.reject({
+            status: 404,
+            message: `article ${id} not found.`,
+          });
+        }
         return rows[0].votes;
       });
   }
