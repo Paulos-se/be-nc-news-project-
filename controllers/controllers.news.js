@@ -12,9 +12,13 @@ const {
 } = require("../models/models.news");
 
 exports.getTopics = (req, res, next) => {
-  fetchTopics().then((result) => {
-    res.status(200).send({ topics: result });
-  });
+  fetchTopics()
+    .then((result) => {
+      res.status(200).send({ topics: result });
+    })
+    .catch((err) => {
+      next(err);
+    });
 };
 
 exports.getArticleById = (req, res, next) => {
@@ -42,9 +46,13 @@ exports.patchArticleVote = (req, res, next) => {
 };
 
 exports.getUsers = (req, res, next) => {
-  fetchUsers().then((users) => {
-    res.status(200).send({ users });
-  });
+  fetchUsers()
+    .then((users) => {
+      res.status(200).send({ users });
+    })
+    .catch((err) => {
+      next(err);
+    });
 };
 
 exports.getArticles = async (req, res, next) => {
