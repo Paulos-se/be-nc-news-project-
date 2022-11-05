@@ -33,16 +33,28 @@ exports.getArticleById = (req, res, next) => {
     });
 };
 
-exports.patchArticleVote = (req, res, next) => {
-  const { inc_votes } = req.body;
-  const { article_id } = req.params;
-  updateArticleVote(inc_votes, article_id)
-    .then((votes) => {
-      res.status(200).send({ votes });
-    })
-    .catch((err) => {
-      next(err);
-    });
+// exports.patchArticleVote = (req, res, next) => {
+//   const { inc_votes } = req.body;
+//   const { article_id } = req.params;
+//   updateArticleVote(inc_votes, article_id)
+//     .then((votes) => {
+//       res.status(200).send({ votes });
+//     })
+//     .catch((err) => {
+//       next(err);
+//     });
+// };
+
+exports.patchArticleVote = async (req, res, next) => {
+  try {
+    const { inc_votes } = req.body;
+    const { article_id } = req.params;
+    votes = await updateArticleVote(inc_votes, article_id);
+
+    res.status(200).send({ votes });
+  } catch (err) {
+    next(err);
+  }
 };
 
 exports.getUsers = (req, res, next) => {
